@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - MTKF Perfumes{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <div>
+        <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; letter-spacing: 1px;">Admin Dashboard</h1>
+        <p style="color: var(--text-secondary); font-size: 1rem;">Manage product catalog inventory and track store activity.</p>
+    </div>
+    
+    <div>
+        <a href="{% url 'admin_add_product' %}" class="btn btn-primary">
+            <i class="fa-solid fa-plus" style="margin-right: 0.5rem;"></i> Add New Perfume
+        </a>
+    </div>
+</div>
+
+<!-- Admin Stats Grid -->
+<div class="admin-stats-grid">
+    <div class="admin-stat-card glass-panel">
+        <span style="font-size: 0.85rem; color: var(--text-secondary); letter-spacing: 1px; text-transform: uppercase;">Total Perfumes</span>
+        <div class="admin-stat-value">{{ total_products }}</div>
+    </div>
+    <div class="admin-stat-card glass-panel">
+        <span style="font-size: 0.85rem; color: var(--text-secondary); letter-spacing: 1px; text-transform: uppercase;">Total Orders</span>
+        <div class="admin-stat-value">{{ total_orders }}</div>
+    </div>
+    <div class="admin-stat-card glass-panel">
+        <span style="font-size: 0.85rem; color: var(--text-secondary); letter-spacing: 1px; text-transform: uppercase;">Completed Sales</span>
+        <div class="admin-stat-value" style="color: var(--success);">${{ total_sales|default:"0.00" }}</div>
+    </div>
+</div>
+
+<!-- Products Management Section -->
+<div class="glass-panel" style="padding: 2rem;">
+    <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--gold); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+        Product Inventory Directory
+    </h3>
+    
+    <div style="overflow-x: auto;">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Brand</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th style="text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prod in products %}
+                    <tr>
+                        <td>
+                            {% if prod.image %}
+                                <img src="{{ prod.image.url }}" alt="{{ prod.name }}" style="width: 45px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border-color);">
+                            {% else %}
+                                <div style="width:45px; height:50px; display:flex; align-items:center; justify-content:center; background:#1e1e1e; color:var(--text-secondary); border-radius:4px;">
+                                    <i class="fa-solid fa-bottle-droplet" style="font-size:1rem; color:var(--gold);"></i>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td style="font-weight: 500;"><a href="{% url 'product_detail' prod.slug %}" target="_blank">{{ prod.name }}</a></td>
+                        <td>{{ prod.brand.name }}</td>
+                        <td>{{ prod.category.name }}</td>
+                        <td style="font-weight: 600; color: var(--gold);">${{ prod.price }}</td>
+                        <td>
+                            {% if prod.stock == 0 %}
+                                <span style="color: var(--danger); font-weight: 600;">Out of Stock</span>
+                            {% elif prod.stock < 5 %}
+                                <span style="color: #ff9500; font-weight: 600;">Low Stock ({{ prod.stock }})</span>
+                            {% else %}
+                                <span style="color: var(--success);">{{ prod.stock }}</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center;">
+                            <div class="admin-action-links" style="justify-content: center;">
+                                <a href="{% url 'admin_edit_product' prod.id %}" class="btn btn-secondary btn-sm" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">
+                                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                                </a>
+                                <a href="{% url 'admin_delete_product' prod.id %}" class="btn btn-danger btn-sm" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; background: rgba(255, 69, 58, 0.1); border: 1px solid var(--danger); color: var(--danger);">
+                                    <i class="fa-solid fa-trash-can"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                            No products registered yet. Click "Add New Perfume" to build the inventory.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

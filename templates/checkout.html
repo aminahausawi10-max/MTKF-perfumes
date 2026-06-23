@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - MTKF Perfumes{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <h1 style="font-size: 2.8rem; margin-bottom: 0.5rem; letter-spacing: 1px;">Checkout</h1>
+    <p style="color: var(--text-secondary); font-size: 1rem;">Complete your details to place your order via WhatsApp payment.</p>
+</div>
+
+<div class="detail-container">
+    <!-- Delivery Details Form -->
+    <div class="glass-panel" style="padding: 2.5rem;">
+        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--gold); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+            Delivery Details
+        </h3>
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="form-group">
+                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <span class="form-helper" style="color: var(--danger);">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div style="margin-top: 2rem; background: rgba(212, 175, 55, 0.05); border: 1px dashed var(--gold); padding: 1.25rem; border-radius: 6px; display: flex; gap: 1rem; align-items: flex-start;">
+                <i class="fa-brands fa-whatsapp" style="font-size: 2.2rem; color: #25D366; margin-top: 0.2rem;"></i>
+                <div>
+                    <h4 style="font-size: 1rem; color: var(--gold); margin-bottom: 0.25rem;">WhatsApp Checkout Confirmation</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+                        Upon clicking submit, your order details will be saved, and you will be redirected to WhatsApp. Send the pre-formatted message to complete your payment and schedule delivery with our team.
+                    </p>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem; height: 50px; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white; border: none; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25);">
+                <i class="fa-brands fa-whatsapp" style="margin-right: 0.5rem; font-size: 1.2rem;"></i> Complete Order via WhatsApp
+            </button>
+        </form>
+    </div>
+
+    <!-- Order Summary Panel -->
+    <div class="glass-panel" style="padding: 2.5rem; height: fit-content;">
+        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--gold); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+            Order Summary
+        </h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 1rem; max-height: 250px; overflow-y: auto; padding-right: 0.5rem; margin-bottom: 1.5rem;">
+            {% for item in cart_items %}
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                    <div style="max-width: 70%;">
+                        <span style="font-size: 0.75rem; color: var(--gold); text-transform: uppercase;">{{ item.product.brand.name }}</span>
+                        <h4 style="font-size: 0.95rem; margin-top: 0.1rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ item.product.name }}</h4>
+                        <span style="font-size: 0.8rem; color: var(--text-secondary);">Qty: {{ item.quantity }}</span>
+                    </div>
+                    <span style="font-size: 1rem; font-weight: 600;">${{ item.product.price }}</span>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div style="background: rgba(255, 255, 255, 0.02); padding: 1.25rem; border-radius: 6px; border: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span style="color: var(--text-secondary); font-size: 0.9rem;">Subtotal</span>
+                <span style="font-weight: 500;">${{ total }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                <span style="color: var(--text-secondary); font-size: 0.9rem;">Shipping</span>
+                <span style="font-weight: 500; color: var(--success);">FREE</span>
+            </div>
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 0.75rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary);">Total</span>
+                <span style="font-size: 1.6rem; font-weight: 700; color: var(--gold);">${{ total }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

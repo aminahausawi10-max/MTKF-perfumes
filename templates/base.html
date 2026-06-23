@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MTKF Perfumes - Luxury Fragrance Store{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <header>
+        <div class="navbar-container">
+            <a href="{% url 'catalog' %}" class="logo">
+                <i class="fa-solid fa-gem"></i> MTKF PERFUMES
+            </a>
+            
+            <nav>
+                <ul class="nav-links">
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'catalog' %}" class="nav-link {% if request.resolver_match.url_name == 'catalog' %}active{% endif %}">Collections</a></li>
+                        {% if user.is_staff %}
+                            <li><a href="{% url 'admin_dashboard' %}" class="nav-link {% if 'admin' in request.resolver_match.url_name %}active{% endif %}"><i class="fa-solid fa-gauge-high"></i> Admin Portal</a></li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                {% if user.is_authenticated %}
+                    <span style="font-size: 0.85rem; color: var(--text-secondary);">
+                        Welcome, <strong>{{ user.username }}</strong>
+                    </span>
+                    <a href="{% url 'cart' %}" class="cart-icon-wrapper nav-link {% if request.resolver_match.url_name == 'cart' %}active{% endif %}">
+                        <i class="fa-solid fa-bag-shopping" style="font-size: 1.25rem;"></i>
+                        <span class="cart-count" id="cart-count">
+                            {{ request.session.cart|length|default:0 }}
+                        </span>
+                    </a>
+                    <a href="{% url 'logout' %}" class="btn btn-secondary btn-sm" title="Log Out">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-secondary btn-sm">Log In</a>
+                    <a href="{% url 'signup' %}" class="btn btn-primary btn-sm">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <span>{{ message }}</span>
+                    <i class="fa-solid fa-xmark" style="cursor: pointer;" onclick="this.parentElement.remove();"></i>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <p>&copy; {% now "Y" %} MTKF Perfumes. All Rights Reserved.</p>
+            <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--gold);">Modern Luxury &bull; Secure Checkout via WhatsApp</p>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

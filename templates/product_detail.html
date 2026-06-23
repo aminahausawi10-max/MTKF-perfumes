@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} - MTKF Perfumes{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <a href="{% url 'catalog' %}" style="font-size: 0.9rem; color: var(--gold); display: inline-flex; align-items: center; gap: 0.5rem;">
+        <i class="fa-solid fa-arrow-left"></i> Back to Collections
+    </a>
+</div>
+
+<div class="detail-container glass-panel">
+    <!-- Gallery -->
+    <div class="detail-gallery">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="detail-img">
+        {% else %}
+            <div style="width:100%; height:550px; display:flex; align-items:center; justify-content:center; background:#1e1e1e; color:var(--text-secondary);">
+                <i class="fa-solid fa-bottle-droplet" style="font-size:6rem; color:var(--gold);"></i>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Product Info Details -->
+    <div class="detail-content">
+        <div>
+            <span style="font-size: 0.9rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; font-weight: 600;">
+                {{ product.brand.name }}
+            </span>
+            <h1 class="detail-title" style="margin-top: 0.5rem; margin-bottom: 0.5rem;">{{ product.name }}</h1>
+            <span style="font-size: 0.85rem; color: var(--text-secondary); background: rgba(255,255,255,0.05); padding: 0.3rem 0.6rem; border-radius: 4px;">
+                {{ product.category.name }}
+            </span>
+        </div>
+
+        <div class="detail-price">${{ product.price }}</div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 0.5rem 0;">
+
+        <div>
+            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--gold);">The Fragrance</h3>
+            <p class="detail-desc">{{ product.description }}</p>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 0.5rem 0;">
+
+        <div>
+            <span style="font-size: 0.9rem; color: var(--text-secondary);">
+                Stock Status: 
+                {% if product.stock > 10 %}
+                    <strong style="color: var(--success);">In Stock ({{ product.stock }} available)</strong>
+                {% elif product.stock > 0 %}
+                    <strong style="color: #ff9500;">Low Stock (Only {{ product.stock }} left)</strong>
+                {% else %}
+                    <strong style="color: var(--danger);">Out of Stock</strong>
+                {% endif %}
+            </span>
+        </div>
+
+        {% if product.stock > 0 %}
+            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <div class="qty-selector">
+                    <label for="quantity" style="font-size: 0.9rem; color: var(--text-secondary);">Quantity:</label>
+                    <input type="number" name="quantity" id="quantity" class="form-input qty-input" value="1" min="1" max="{{ product.stock }}">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; width: 100%; height: 50px;">
+                    <i class="fa-solid fa-bag-shopping" style="margin-right: 0.5rem;"></i> Add to Shopping Bag
+                </button>
+            </form>
+        {% else %}
+            <button class="btn btn-secondary" style="width: 100%; height: 50px; cursor: not-allowed; opacity: 0.5; margin-top: 1.5rem;" disabled>
+                Sold Out
+            </button>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Related Products -->
+{% if related_products %}
+    <div style="margin-top: 4rem;">
+        <h2 style="font-size: 2rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">You May Also Enjoy</h2>
+        
+        <div class="products-grid">
+            {% for item in related_products %}
+                <div class="product-card">
+                    <div class="product-image-wrapper" style="height: 250px;">
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="{{ item.name }}" class="product-img">
+                        {% else %}
+                            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#1e1e1e; color:var(--text-secondary);">
+                                <i class="fa-solid fa-bottle-droplet" style="font-size:2rem; color:var(--gold);"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="product-info" style="padding: 1rem;">
+                        <span class="product-brand" style="font-size: 0.75rem;">{{ item.brand.name }}</span>
+                        <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;">
+                            <a href="{% url 'product_detail' item.slug %}">{{ item.name }}</a>
+                        </h4>
+                        <div class="product-price-row">
+                            <span style="font-size: 1.1rem; font-weight: 600;">${{ item.price }}</span>
+                            <a href="{% url 'product_detail' item.slug %}" class="btn btn-primary btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;">View</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

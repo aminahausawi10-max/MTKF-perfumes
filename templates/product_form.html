@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - MTKF Perfumes{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <a href="{% url 'admin_dashboard' %}" style="font-size: 0.9rem; color: var(--gold); display: inline-flex; align-items: center; gap: 0.5rem;">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+    </a>
+</div>
+
+<div class="auth-wrapper glass-panel" style="max-width: 650px; margin: 2rem auto;">
+    <h2 class="auth-title" style="margin-bottom: 1.5rem;">{{ title }}</h2>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-error" style="margin-bottom: 1.5rem;">
+                    <span>{{ error }}</span>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% for field in form %}
+            <div class="form-group">
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <span class="form-helper" style="color: var(--danger);">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary" style="flex: 1; height: 50px;">
+                Cancel
+            </a>
+            <button type="submit" class="btn btn-primary" style="flex: 2; height: 50px;">
+                Save Product <i class="fa-solid fa-floppy-disk" style="margin-left: 0.5rem;"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+    /* Styling overrides for the product form fields */
+    .form-group input, .form-group select, .form-group textarea {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        padding: 0.9rem 1.2rem;
+        border-radius: 6px;
+        color: var(--text-primary);
+        font-family: inherit;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        margin-top: 0.3rem;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        background: rgba(255, 255, 255, 0.05);
+    }
+    .form-group input[type="file"] {
+        padding: 0.5rem;
+        border: 1px dashed var(--border-color);
+        background: transparent;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}

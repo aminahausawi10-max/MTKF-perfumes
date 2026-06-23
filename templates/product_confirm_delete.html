@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete {{ product.name }} - MTKF Perfumes{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper glass-panel" style="max-width: 500px; margin: 4rem auto; text-align: center;">
+    <div style="font-size: 4rem; color: var(--danger); margin-bottom: 1.5rem;">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+    </div>
+    
+    <h2 style="font-size: 1.8rem; margin-bottom: 1rem; letter-spacing: 1px;">Confirm Deletion</h2>
+    
+    <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 2rem;">
+        Are you sure you want to delete the product <strong>"{{ product.name }}"</strong> by <strong>{{ product.brand.name }}</strong>? This action is permanent and cannot be undone.
+    </p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div style="display: flex; gap: 1rem;">
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary" style="flex: 1; height: 50px;">
+                Cancel
+            </a>
+            <button type="submit" class="btn btn-danger" style="flex: 1; height: 50px;">
+                Yes, Delete <i class="fa-solid fa-trash" style="margin-left: 0.5rem;"></i>
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
