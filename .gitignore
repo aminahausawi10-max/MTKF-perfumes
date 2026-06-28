@@ -19,3 +19,6 @@ staticfiles/
 
 # Media uploads (user generated content)
 media/
+
+.vercel
+.env*
