@@ -7,6 +7,21 @@
     <title>{% block title %}MTKF Perfumes - Luxury Fragrance Store{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PWA Integration -->
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#bfa15f">
+    <link rel="apple-touch-icon" href="{% static 'images/icon-192.png' %}">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('{% static "service-worker.js" %}')
+                    .then((reg) => console.log('Service worker registered successfully:', reg.scope))
+                    .catch((err) => console.warn('Service worker registration failed:', err));
+            });
+        }
+    </script>
+    
     {% block extra_head %}{% endblock %}
 </head>
 <body>

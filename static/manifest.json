@@ -1,0 +1,24 @@
+{
+  "name": "MTKF Perfumes",
+  "short_name": "MTKF",
+  "description": "Luxury Perfumes & Designer Fragrances Store",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#bfa15f",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/static/images/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/images/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}
