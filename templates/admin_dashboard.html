@@ -28,7 +28,7 @@
     </div>
     <div class="admin-stat-card glass-panel">
         <span style="font-size: 0.85rem; color: var(--text-secondary); letter-spacing: 1px; text-transform: uppercase;">Completed Sales</span>
-        <div class="admin-stat-value" style="color: var(--success);">${{ total_sales|default:"0.00" }}</div>
+        <div class="admin-stat-value" style="color: var(--success);">₦{{ total_sales|default:"0.00" }}</div>
     </div>
 </div>
 
@@ -66,7 +66,7 @@
                         <td style="font-weight: 500;"><a href="{% url 'product_detail' prod.slug %}" target="_blank">{{ prod.name }}</a></td>
                         <td>{{ prod.brand.name }}</td>
                         <td>{{ prod.category.name }}</td>
-                        <td style="font-weight: 600; color: var(--gold);">${{ prod.price }}</td>
+                        <td style="font-weight: 600; color: var(--gold);">₦{{ prod.price }}</td>
                         <td>
                             {% if prod.stock == 0 %}
                                 <span style="color: var(--danger); font-weight: 600;">Out of Stock</span>

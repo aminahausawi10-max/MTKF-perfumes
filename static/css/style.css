@@ -696,17 +696,94 @@ footer p {
     }
 }
 
+/* Base styles for the Mobile Floating Navigation (hidden on desktop) */
+.mobile-floating-nav {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(18, 18, 18, 0.85);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    padding: 0.75rem 1.75rem;
+    border-radius: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.1);
+    z-index: 9999;
+    align-items: center;
+    gap: 2rem;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    gap: 0.3rem;
+    cursor: pointer;
+    min-width: 45px;
+}
+
+.floating-nav-item i {
+    font-size: 1.25rem;
+    transition: transform 0.3s ease;
+}
+
+.floating-nav-item:hover, .floating-nav-item.active {
+    color: var(--gold);
+}
+
+.floating-nav-item:hover i {
+    transform: translateY(-2px);
+}
+
+.floating-cart-count {
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    background: var(--gold);
+    color: #000;
+    font-size: 0.65rem;
+    font-weight: 700;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 @media(max-width: 768px) {
+    /* Hide default header nav list and action buttons on mobile */
+    header nav, .nav-actions {
+        display: none !important;
+    }
+    
+    /* Make header logo centered and premium on mobile */
     .navbar-container {
-        flex-direction: column;
-        gap: 1.5rem;
+        padding: 1rem;
+        justify-content: center;
     }
-    .nav-links {
-        gap: 1.2rem;
+    
+    /* Reveal floating nav on mobile screens */
+    .mobile-floating-nav {
+        display: flex;
     }
+    
+    body {
+        /* Add padding at bottom to prevent floating nav from covering content */
+        padding-bottom: 90px;
+    }
+    
     main {
         padding: 2rem 1rem;
     }
+    
     .cart-table th, .cart-table td {
         padding: 0.75rem 0.5rem;
         font-size: 0.85rem;

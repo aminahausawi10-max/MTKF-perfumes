@@ -39,7 +39,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td style="font-size: 1.1rem; font-weight: 500;">${{ item.product.price }}</td>
+                        <td style="font-size: 1.1rem; font-weight: 500;">₦{{ item.product.price }}</td>
                         <td>
                             <form method="POST" action="{% url 'update_cart' item.product.id %}" style="display: flex; align-items: center; gap: 0.5rem;">
                                 {% csrf_token %}
@@ -49,7 +49,7 @@
                                 </button>
                             </form>
                         </td>
-                        <td style="font-size: 1.1rem; font-weight: 600; color: var(--gold);">${{ item.subtotal }}</td>
+                        <td style="font-size: 1.1rem; font-weight: 600; color: var(--gold);">₦{{ item.subtotal }}</td>
                         <td style="text-align: center;">
                             <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-danger btn-sm" style="padding: 0.5rem 0.8rem;" title="Remove from bag">
                                 <i class="fa-solid fa-trash-can"></i>
@@ -70,7 +70,7 @@
             <div style="text-align: right; display: flex; flex-direction: column; gap: 1rem; align-items: flex-end;">
                 <div>
                     <span class="cart-total-label" style="margin-right: 1.5rem; color: var(--text-secondary);">Total Value:</span>
-                    <span class="cart-total-value">${{ total }}</span>
+                    <span class="cart-total-value">₦{{ total }}</span>
                 </div>
                 
                 <a href="{% url 'checkout' %}" class="btn btn-primary" style="height: 50px; padding: 0 2.5rem; display: flex; align-items: center; justify-content: center; font-size: 1.05rem;">

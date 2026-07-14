@@ -72,7 +72,7 @@
                     <p class="product-desc-snippet">{{ product.description }}</p>
                     
                     <div class="product-price-row">
-                        <span class="product-price">${{ product.price }}</span>
+                        <span class="product-price">₦{{ product.price }}</span>
                         
                         <div style="display: flex; gap: 0.5rem;">
                             <a href="{% url 'product_detail' product.slug %}" class="btn btn-secondary btn-sm" style="padding: 0.5rem 0.8rem;">

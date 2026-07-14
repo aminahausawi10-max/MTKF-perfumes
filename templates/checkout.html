@@ -60,7 +60,7 @@
                         <h4 style="font-size: 0.95rem; margin-top: 0.1rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ item.product.name }}</h4>
                         <span style="font-size: 0.8rem; color: var(--text-secondary);">Qty: {{ item.quantity }}</span>
                     </div>
-                    <span style="font-size: 1rem; font-weight: 600;">${{ item.product.price }}</span>
+                    <span style="font-size: 1rem; font-weight: 600;">₦{{ item.product.price }}</span>
                 </div>
             {% endfor %}
         </div>
@@ -68,7 +68,7 @@
         <div style="background: rgba(255, 255, 255, 0.02); padding: 1.25rem; border-radius: 6px; border: 1px solid var(--border-color);">
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                 <span style="color: var(--text-secondary); font-size: 0.9rem;">Subtotal</span>
-                <span style="font-weight: 500;">${{ total }}</span>
+                <span style="font-weight: 500;">₦{{ total }}</span>
             </div>
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
                 <span style="color: var(--text-secondary); font-size: 0.9rem;">Shipping</span>
@@ -77,7 +77,7 @@
             <hr style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 0.75rem;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary);">Total</span>
-                <span style="font-size: 1.6rem; font-weight: 700; color: var(--gold);">${{ total }}</span>
+                <span style="font-size: 1.6rem; font-weight: 700; color: var(--gold);">₦{{ total }}</span>
             </div>
         </div>
     </div>
