@@ -119,19 +119,18 @@ CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY') or os.environ.get('CLO
 CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET') or os.environ.get('CLODINARY_API_SECRET')
 
 if CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET:
-    # django-cloudinary-storage requires cloudinary_storage to be placed before django.contrib.staticfiles
-    if 'django.contrib.staticfiles' in INSTALLED_APPS:
-        idx = INSTALLED_APPS.index('django.contrib.staticfiles')
-        INSTALLED_APPS.insert(idx, 'cloudinary_storage')
-    else:
-        INSTALLED_APPS.append('cloudinary_storage')
+    INSTALLED_APPS.append('cloudinary_storage')
     INSTALLED_APPS.append('cloudinary')
+
     
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
         'API_KEY': CLOUDINARY_API_KEY,
         'API_SECRET': CLOUDINARY_API_SECRET,
     }
+    
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     
     STORAGES = {
         "default": {
@@ -142,6 +141,9 @@ if CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET:
         },
     }
 else:
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    
     STORAGES = {
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -150,6 +152,7 @@ else:
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
         },
     }
+
 
 
 # Authentication configuration
