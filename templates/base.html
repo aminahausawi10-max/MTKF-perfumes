@@ -140,14 +140,54 @@
             <i class="fa-solid fa-xmark lang-close" onclick="closeLanguageModal()"></i>
             <h3 data-translate="Select Language">Select Language</h3>
             <div class="lang-options">
-                <button class="lang-btn" onclick="changeLanguage('en')">English</button>
-                <button class="lang-btn" onclick="changeLanguage('ar')">العربية (Arabic)</button>
-                <button class="lang-btn" onclick="changeLanguage('fr')">Français (French)</button>
+                <button class="lang-btn" data-lang-code="en" onclick="changeLanguage('en')">English</button>
+                <button class="lang-btn" data-lang-code="ha" onclick="changeLanguage('ha')">Hausa</button>
+                <button class="lang-btn" data-lang-code="ar" onclick="changeLanguage('ar')">العربية</button>
+                <button class="lang-btn" data-lang-code="fr" onclick="changeLanguage('fr')">Français</button>
+                <button class="lang-btn" data-lang-code="es" onclick="changeLanguage('es')">Español</button>
+                <button class="lang-btn" data-lang-code="de" onclick="changeLanguage('de')">Deutsch</button>
+                <button class="lang-btn" data-lang-code="hi" onclick="changeLanguage('hi')">हिन्दी</button>
+                <button class="lang-btn" data-lang-code="pt" onclick="changeLanguage('pt')">Português</button>
+                <button class="lang-btn" data-lang-code="zh-CN" onclick="changeLanguage('zh-CN')">中文</button>
+                <button class="lang-btn" data-lang-code="ru" onclick="changeLanguage('ru')">Русский</button>
+                <button class="lang-btn" data-lang-code="ja" onclick="changeLanguage('ja')">日本語</button>
+                <button class="lang-btn" data-lang-code="it" onclick="changeLanguage('it')">Italiano</button>
+                <button class="lang-btn" data-lang-code="tr" onclick="changeLanguage('tr')">Türkçe</button>
+                <button class="lang-btn" data-lang-code="ko" onclick="changeLanguage('ko')">한국어</button>
+                <button class="lang-btn" data-lang-code="sw" onclick="changeLanguage('sw')">Kiswahili</button>
+                <button class="lang-btn" data-lang-code="yo" onclick="changeLanguage('yo')">Yorùbá</button>
+                <button class="lang-btn" data-lang-code="ig" onclick="changeLanguage('ig')">Igbo</button>
+                <button class="lang-btn" data-lang-code="bn" onclick="changeLanguage('bn')">বাংলা</button>
+                <button class="lang-btn" data-lang-code="id" onclick="changeLanguage('id')">Bahasa Indonesia</button>
+                <button class="lang-btn" data-lang-code="ur" onclick="changeLanguage('ur')">اردو</button>
             </div>
         </div>
     </div>
 
+    <!-- Hidden Google Translate Element -->
+    <div id="google_translate_element" style="display:none;"></div>
+
+    <script type="text/javascript">
+        // --- Google Translate Initialization ---
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <script>
+        // Set cookie immediately on script parse if stored language preference exists
+        const savedLang = localStorage.getItem('app_lang') || 'en';
+        if (savedLang !== 'en') {
+            const cookieVal = '/en/' + savedLang;
+            document.cookie = "googtrans=" + cookieVal + ";path=/";
+            document.cookie = "googtrans=" + cookieVal + ";path=/;domain=" + window.location.hostname;
+        }
+
         // --- Show/Hide Password Feature ---
         document.addEventListener("DOMContentLoaded", function() {
             const passwordFields = document.querySelectorAll('input[type="password"]');
@@ -176,8 +216,7 @@
             });
             
             // --- Load Language Preference on Load ---
-            const savedLang = localStorage.getItem('app_lang') || 'en';
-            applyTranslations(savedLang);
+            applyLanguageStyles(savedLang);
         });
 
         // --- Language Picker Functions ---
@@ -187,6 +226,7 @@
             setTimeout(() => modal.classList.add('show'), 10);
         }
 
+        // Close language modal
         function closeLanguageModal() {
             const modal = document.getElementById('languageModal');
             modal.classList.remove('show');
@@ -195,129 +235,37 @@
 
         function changeLanguage(lang) {
             localStorage.setItem('app_lang', lang);
-            applyTranslations(lang);
+            
+            // Set cookie for translation
+            const cookieVal = lang === 'en' ? '' : '/en/' + lang;
+            document.cookie = "googtrans=" + cookieVal + ";path=/";
+            document.cookie = "googtrans=" + cookieVal + ";path=/;domain=" + window.location.hostname;
+            
+            // Trigger select change in Google widget
+            const select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = lang;
+                select.dispatchEvent(new Event('change'));
+            } else {
+                location.reload();
+            }
+
+            applyLanguageStyles(lang);
             closeLanguageModal();
         }
 
-        // --- Simple Translation System ---
-        const dictionary = {
-            'en': {
-                'Shop': 'Shop',
-                'Bag': 'Bag',
-                'Admin': 'Admin',
-                'Logout': 'Logout',
-                'Login': 'Login',
-                'Register': 'Register',
-                'Language': 'Language',
-                'Select Language': 'Select Language',
-                'Your Shopping Bag': 'Your Shopping Bag',
-                'Total Value:': 'Total Value:',
-                'Proceed to Checkout': 'Proceed to Checkout',
-                'Continue Shopping': 'Continue Shopping',
-                'Welcome Back': 'Welcome Back',
-                'Create Account': 'Create Account',
-                'Already have an account?': 'Already have an account?',
-                'Don\'t have an account?': 'Don\'t have an account?',
-                'Log In': 'Log In',
-                'Sign Up': 'Sign Up'
-            },
-            'ar': {
-                'Shop': 'المتجر',
-                'Bag': 'الحقيبة',
-                'Admin': 'الإدارة',
-                'Logout': 'خروج',
-                'Login': 'دخول',
-                'Register': 'تسجيل',
-                'Language': 'اللغة',
-                'Select Language': 'اختر اللغة',
-                'Your Shopping Bag': 'حقيبة تسوقك',
-                'Total Value:': 'القيمة الإجمالية:',
-                'Proceed to Checkout': 'متابعة الدفع',
-                'Continue Shopping': 'مواصلة التسوق',
-                'Welcome Back': 'مرحباً بك مجدداً',
-                'Create Account': 'إنشاء حساب',
-                'Already have an account?': 'هل لديك حساب بالفعل؟',
-                'Don\'t have an account?': 'ليس لديك حساب؟',
-                'Log In': 'تسجيل الدخول',
-                'Sign Up': 'إنشاء الحساب'
-            },
-            'fr': {
-                'Shop': 'Boutique',
-                'Bag': 'Panier',
-                'Admin': 'Admin',
-                'Logout': 'Quitter',
-                'Login': 'Connexion',
-                'Register': 'S\'inscrire',
-                'Language': 'Langue',
-                'Select Language': 'Sélectionner la langue',
-                'Your Shopping Bag': 'Votre Panier',
-                'Total Value:': 'Valeur Totale:',
-                'Proceed to Checkout': 'Passer à la caisse',
-                'Continue Shopping': 'Continuer les achats',
-                'Welcome Back': 'Bon retour',
-                'Create Account': 'Créer un compte',
-                'Already have an account?': 'Déjà un compte ?',
-                'Don\'t have an account?': 'Pas de compte ?',
-                'Log In': 'Se connecter',
-                'Sign Up': 'S\'inscrire'
-            }
-        };
-
-        function applyTranslations(lang) {
-            // Set active state on button
+        function applyLanguageStyles(lang) {
+            // Set active class on buttons
             document.querySelectorAll('.lang-btn').forEach(btn => {
-                if (btn.textContent.toLowerCase().includes(lang === 'en' ? 'english' : lang === 'ar' ? 'arabic' : 'french')) {
+                if (btn.getAttribute('data-lang-code') === lang) {
                     btn.classList.add('active');
                 } else {
                     btn.classList.remove('active');
                 }
             });
 
-            // Translate elements with data-translate attribute
-            document.querySelectorAll('[data-translate]').forEach(el => {
-                const key = el.getAttribute('data-translate-key') || el.textContent.trim();
-                if (!el.getAttribute('data-translate-key')) {
-                    el.setAttribute('data-translate-key', key);
-                }
-                const translation = dictionary[lang][key] || key;
-                el.textContent = translation;
-            });
-
-            // Translate general text matches
-            const textSelectors = [
-                'h1', 'h2', 'h3', 'a.floating-nav-item span', 'button.btn', 'a.btn', 'div.auth-switch'
-            ];
-            
-            textSelectors.forEach(selector => {
-                document.querySelectorAll(selector).forEach(el => {
-                    if (el.children.length === 0) {
-                        const val = el.textContent.trim();
-                        const key = el.getAttribute('data-translate-key') || val;
-                        if (dictionary[lang][key]) {
-                            if (!el.getAttribute('data-translate-key')) {
-                                el.setAttribute('data-translate-key', key);
-                            }
-                            el.textContent = dictionary[lang][key];
-                        }
-                    } else {
-                        // Translate elements that have children but translate only text nodes
-                        for (let node of el.childNodes) {
-                            if (node.nodeType === Node.TEXT_NODE) {
-                                const val = node.textContent.trim();
-                                if (val) {
-                                    const key = node.parentNode.getAttribute ? node.parentNode.getAttribute('data-translate-key') : null || val;
-                                    if (dictionary[lang][key]) {
-                                        node.textContent = dictionary[lang][key];
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            });
-
-            // Handle Right-to-Left (RTL) spacing for Arabic
-            if (lang === 'ar') {
+            // Handle Right-to-Left (RTL) spacing for Arabic and Urdu
+            if (lang === 'ar' || lang === 'ur') {
                 document.documentElement.dir = 'rtl';
                 document.body.style.fontFamily = "'Cairo', 'Inter', sans-serif";
             } else {
