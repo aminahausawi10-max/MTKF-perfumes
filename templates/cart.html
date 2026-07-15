@@ -39,9 +39,9 @@
                                 </div>
                             </div>
                         </td>
-                        <td style="font-size: 1.1rem; font-weight: 500;">₦{{ item.product.price }}</td>
-                        <td>
-                            <form method="POST" action="{% url 'update_cart' item.product.id %}" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <td data-label="Price" style="font-size: 1.1rem; font-weight: 500;">₦{{ item.product.price }}</td>
+                        <td data-label="Quantity">
+                            <form method="POST" action="{% url 'update_cart' item.product.id %}" style="display: flex; align-items: center; gap: 0.5rem; justify-content: flex-end;">
                                 {% csrf_token %}
                                 <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="form-input qty-input" style="width: 70px; padding: 0.5rem; text-align: center;">
                                 <button type="submit" class="btn btn-secondary btn-sm" style="padding: 0.5rem;" title="Update Quantity">
@@ -49,12 +49,13 @@
                                 </button>
                             </form>
                         </td>
-                        <td style="font-size: 1.1rem; font-weight: 600; color: var(--gold);">₦{{ item.subtotal }}</td>
-                        <td style="text-align: center;">
+                        <td data-label="Subtotal" style="font-size: 1.1rem; font-weight: 600; color: var(--gold);">₦{{ item.subtotal }}</td>
+                        <td data-label="Actions" style="text-align: right; justify-content: flex-end;">
                             <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-danger btn-sm" style="padding: 0.5rem 0.8rem;" title="Remove from bag">
                                 <i class="fa-solid fa-trash-can"></i>
                             </a>
                         </td>
+
                     </tr>
                 {% endfor %}
             </tbody>

@@ -758,6 +758,103 @@ footer p {
     justify-content: center;
 }
 
+/* Password toggle styles */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+.password-toggle-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--text-secondary);
+    z-index: 10;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+.password-toggle-btn:hover {
+    color: var(--gold);
+}
+
+/* Language selector overlay & modal */
+.lang-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.lang-modal.show {
+    display: flex;
+    opacity: 1;
+}
+.lang-card {
+    background: #111;
+    border: 1px solid var(--border-color);
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    position: relative;
+}
+.lang-modal.show .lang-card {
+    transform: translateY(0);
+}
+.lang-card h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.6rem;
+    color: var(--gold);
+}
+.lang-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+.lang-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.lang-btn:hover, .lang-btn.active {
+    background: var(--gold-gradient);
+    color: #0a0a0a;
+    border-color: var(--gold);
+}
+.lang-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+.lang-close:hover {
+    color: var(--danger);
+}
+
 @media(max-width: 768px) {
     /* Hide default header nav list and action buttons on mobile */
     header nav, .nav-actions {
@@ -773,6 +870,10 @@ footer p {
     /* Reveal floating nav on mobile screens */
     .mobile-floating-nav {
         display: flex;
+        gap: 1rem;
+        padding: 0.75rem 1rem;
+        width: 90%;
+        justify-content: space-around;
     }
     
     body {
@@ -784,9 +885,51 @@ footer p {
         padding: 2rem 1rem;
     }
     
-    .cart-table th, .cart-table td {
-        padding: 0.75rem 0.5rem;
-        font-size: 0.85rem;
+    /* Cart table responsive cards */
+    .cart-table, .cart-table thead, .cart-table tbody, .cart-table th, .cart-table td, .cart-table tr {
+        display: block;
+    }
+    .cart-table thead {
+        display: none;
+    }
+    .cart-table tr {
+        border-bottom: 1px solid var(--border-color);
+        padding: 1.5rem 0;
+        position: relative;
+    }
+    .cart-table td {
+        border: none;
+        padding: 0.5rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        text-align: right;
+    }
+    .cart-table td:first-child {
+        display: block;
+        text-align: left;
+        padding-bottom: 1rem;
+    }
+    .cart-table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        color: var(--gold);
+        text-transform: uppercase;
+        font-size: 0.8rem;
+    }
+    .cart-table td:first-child::before {
+        content: none;
+    }
+    .cart-total-section {
+        flex-direction: column-reverse;
+        gap: 1.5rem;
+        align-items: stretch;
+    }
+    .cart-total-section div {
+        text-align: center !important;
+        align-items: center !important;
     }
 }
 
@@ -794,3 +937,4 @@ footer p {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
